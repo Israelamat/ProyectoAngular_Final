@@ -1,0 +1,94 @@
+<div id="postContainer">
+  <div
+    class="card mb-4 shadow"
+    [ngClass]="{
+      'border-success': publicacionCard.mood == 1,
+      'border-danger': publicacionCard.mood == 2
+    }"
+  >
+    @if(publicacionCard.image !==''){
+    <img
+      class="card-img-top"
+      [routerLink]="['/posts/', publicacionCard.id]"
+      [src]="publicacionCard.image"
+    />
+    }@if(publicacionCard.title !=='' || publicacionCard.description !==''){
+    <div class="card-body">
+      <h5 class="card-title">{{ publicacionCard.title }}</h5>
+      <p class="card-text">{{ publicacionCard.description }}</p>
+    </div>
+    }
+
+    <div class="card-footer bg-transparent">
+      <div class="row">
+        <div class="col-auto avatar ps-1 pe-1">
+          <img
+            src="{{ publicacionCard.creator?.avatar }}"
+            class="rounded-circle"
+          />
+        </div>
+
+        <div class="col">
+          <div
+            class="name"
+            [routerLink]="['/profile/', publicacionCard.creator!.id]"
+          >
+            {{ publicacionCard.creator?.name }}
+          </div>
+          <div>
+            <small class="text-muted">{{
+              publicacionCard.date | date : "MM/dd/yyyy hh:mm a"
+            }}</small>
+          </div>
+        </div>
+
+        @if (publicacionCard.mine) {
+        <div class="col-auto">
+          <button
+            class="btn btn-danger mr-3 h-100 delete"
+            (click)="deletePost()"
+          >
+            Delete
+          </button>
+        </div>
+        <div class="col-auto">
+          <button
+            class="btn btn-primary h-100 edit"
+            [routerLink]="['/posts/' + publicacionCard.id + '/edit']"
+          >
+            Edit
+          </button>
+        </div>
+        }
+
+        <div class="col-auto pt-2">
+          <i
+            class="fa-regular fa-thumbs-up me-3"
+            [ngClass]="{
+              'text-primary': publicacionCard.likes === true,
+              '': publicacionCard.likes === false
+            }"
+            (click)="thumbsRating(publicacionCard, true)"
+          >
+          </i>
+
+          <i
+            class="fa-regular fa-thumbs-down"
+            [ngClass]="{
+              'text-danger': publicacionCard.likes === false,
+              '': publicacionCard.likes === true
+            }"
+            (click)="thumbsRating(publicacionCard, false)"
+          >
+          </i>
+
+          <div class="col-auto pt-2">
+            <i >{{ totalLikes }}</i>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

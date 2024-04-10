@@ -1,0 +1,156 @@
+<form
+  action="#"
+  class="mt-4"
+  id="newPlace"
+  [formGroup]="postForm"
+  (ngSubmit)="addPost()"
+  novalidate
+  formRequired
+>
+  <div class="mb-3">
+    <label for="title">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      name="title"
+      formControlName="title"
+      [ngClass]="validClasses(title, 'is-valid', 'is-invalid')"
+      placeholder="Enter title"
+      id="title"
+    />
+    @if(title.errors?.['minlength']){
+    <div class="invalid-feedback">
+      A title must be at least 5 characters long! Introduce:
+      {{title.errors?.['minlength'].requiredLength - title.errors?.['minlength'].actualLength}}
+      more characters!
+    </div>
+    } @if(title.errors?.['pattern']){
+    <div class="invalid-feedback">
+      A title must contain only letters and spaces!
+    </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="description">Description</label>
+    <textarea
+      class="form-control"
+      formControlName="description"
+      [ngClass]="validClasses(description, 'is-valid', 'is-invalid')"
+      id="description"
+      name="description"
+      rows="3"
+      placeholder="Write something..."
+    >
+    </textarea>
+    @if(description.errors?.['minlength']){
+    <div class="invalid-feedback">
+      A description must be at least 8 characters long! Introduce:
+      {{description.errors?.['minlength'].requiredLength - description.errors?.['minlength'].actualLength}}
+      more characters!
+    </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <input
+      type="radio"
+      name="eleccion"
+      id="postPhoto"
+      value="photo"
+      formControlName="eleccion"
+      checked
+    />
+    <label for="postPhoto">Post Photo</label>
+    <input
+      type="radio"
+      name="eleccion"
+      id="postLocation"
+      value="location"
+      formControlName="eleccion"
+      class="ms-3"
+    />
+    <label for="postLocation">Post location</label>
+  </div>
+
+  <div
+    class="mb-3"
+    [ngClass]="{
+      'd-none': postForm.get('eleccion')!.value !== 'photo',
+      '': postForm.get('eleccion')!.value !== 'location'
+    }"
+  >
+    <label for="image">Photo</label>
+    <input
+      type="file"
+      class="form-control"
+      formControlName="image"
+      name="image"
+      (change)="ShowImage($event)"
+      id="image"
+    />
+  </div>
+
+  <img
+    [src]="imageBase64"
+    alt=""
+    id="imgPreview"
+    class="img-thumbnail"
+    [ngClass]="{ 'd-none': imageBase64 === '' }"
+  />
+
+  <div
+    id="location-group"
+    class="mb-3 d-none"
+    [ngClass]="{
+      'd-none': postForm.get('eleccion')!.value !== 'location',
+      '': postForm.get('eleccion')!.value !== 'photo'
+    }"
+  >
+    @if (coordinates) {
+    <div class="mt-4" id="map">
+      <div id="parentSearch">
+        <input type="text" name="search" id="search" />
+      </div>
+      <bm-map [coords]="coordinates">
+        <bm-marker [coords]="coordinates" color="blue"></bm-marker>
+        <bm-autosuggest
+          idContainer="parentSearch"
+          idInput="search"
+          (locationChanged)="moveMap($event)"
+        ></bm-autosuggest>
+      </bm-map>
+    </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="mood">Mood</label>
+    <select class="form-select" name="mood" formControlName="mood" id="mood">
+      <option value="0">Neutral</option>
+      <option value="1">Happy</option>
+      <option value="2">Angry</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="col-auto">
+      <button
+        type="submit"
+        class="btn btn-primary btn-lg"
+        [disabled]="postForm.invalid"
+      >
+        Create
+      </button>
+    </div>
+    @if(postForm.touched && postForm.hasError('required')){
+    <div class="col my-auto text-danger">
+      The post must have at least a title, a description, or an image
+    </div>
+    }
+
+    <div class="alert alert-danger col d-none" id="errorMsg">
+      A post can't be empty!
+    </div>
+  </div>
+</form>

@@ -1,0 +1,150 @@
+<div class="container">
+  <form (ngSubmit)="userRegister()" [formGroup]="formRegister" id="form-register" class="mt-4" method="POST" role="form">
+    <legend>Create an account</legend>
+
+    <div class="mb-3">
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="nameUser"
+        formControlName="name"
+        [ngClass]="validClasses(name, 'is-valid', 'is-invalid')"
+        placeholder="Name"
+      />
+      @if(name.errors?.['minlength']){
+        <div class="invalid-feedback">
+          The name has to be completed! Introduce:
+          {{name.errors?.['minlength'].requiredLength - name.errors?.['minlength'].actualLength}}
+          more characters!
+        </div>
+        } @if(name.errors?.['pattern']){
+        <div class="invalid-feedback">
+          A name must contain only letters and spaces!
+        </div>
+        }
+    </div>
+    <div class="mb-3">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        formControlName="email"
+        [ngClass]="validClasses(email, 'is-valid', 'is-invalid')"
+        placeholder="Email"
+      />
+      @if(email.errors?.['minlength']){
+        <div class="invalid-feedback">
+          The email has to be completed! Introduce:
+          {{email.errors?.['minlength'].requiredLength - email.errors?.['minlength'].actualLength}}
+          more characters!
+        </div>
+        } @if(email.errors?.['pattern']){
+        <div class="invalid-feedback">
+          A email must contain only letters and spaces!
+        </div>
+        }
+    </div>
+    <div class="mb-3">
+      <label for="email2">Repeat Email:</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email2"
+        name="email2"
+        formControlName="email2"
+        [ngClass]="validClasses(email2, 'is-valid', 'is-invalid')"
+        placeholder="Email"
+      />
+      @if(email2.errors?.['minlength']){
+        <div class="invalid-feedback">
+          The email2 has to be completed! Introduce:
+          {{email2.errors?.['minlength'].requiredLength - email2.errors?.['minlength'].actualLength}}
+          more characters!
+        </div>
+        } @if(email2.errors?.['pattern']){
+        <div class="invalid-feedback">
+          A email2 must contain only letters and spaces!
+        </div>
+        }
+    </div>
+    <div class="mb-3">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        formControlName="password"
+        [ngClass]="validClasses(password, 'is-valid', 'is-invalid')"
+        placeholder="Password"
+      />
+      @if(password.errors?.['minlength']){
+        <div class="invalid-feedback">
+          A description must be at least 4 characters long! Introduce:
+          {{password.errors?.['minlength'].requiredLength - password.errors?.['minlength'].actualLength}}
+          more characters!
+        </div>
+        } @if(password.errors?.['pattern']){
+        <div class="invalid-feedback">
+          A password must contain only letters and spaces!
+        </div>
+        }
+    </div>
+    <div class="form-row">
+      <div class="mb-3 col">
+        <label for="lat">Latitude:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="lat"
+          name="lat"
+          formControlName="lat"
+          placeholder="Geolocating..."
+          readonly
+        />
+      </div>
+      <div class="mb-3 col">
+        <label for="lng">Longitude:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="lng"
+          name="lng"
+          formControlName="lng"
+          placeholder="Geolocating..."
+          readonly
+        />
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="avatar">Avatar image</label>
+      <input type="file" class="form-control" id="avatar" name="avatar"  formControlName="avatar"  [ngClass]="validClasses(avatar, 'is-valid', 'is-invalid')"
+      (change)="ShowImage($event)" />
+      @if(avatar.errors?.['minlength']){
+        <div class="invalid-feedback">
+          A description must be at least 4 characters long! Introduce:
+          {{avatar.errors?.['minlength'].requiredLength - avatar.errors?.['minlength'].actualLength}}
+          more characters!
+        </div>
+        } @if(avatar.errors?.['pattern']){
+        <div class="invalid-feedback">
+          A password must contain only letters and spaces!
+        </div>
+        }
+    </div>
+    <img [src]="imageBase64" alt="Avatar Preview" id="imgPreview" class="img-thumbnail" *ngIf="imageBase64" />
+    <p class="text-danger" id="errorInfo"></p>
+    <a class="btn btn-secondary" [routerLink]="['/login']" role="button">Go back login</a>
+    <button type="submit" class="btn btn-primary" [disabled]="formRegister.invalid"
+    >Create account</button>
+    @if(formRegister.touched && formRegister.hasError('required')){
+      <div class="col my-auto text-danger">
+        The post must have at least a name, a email, password or an image
+      </div>
+      }
+  </form>
+</div>

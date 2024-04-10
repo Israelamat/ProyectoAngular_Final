@@ -1,0 +1,33 @@
+@if(post){
+<div class="mt-4">
+  <post-card [publicacionCard]="post" (delete)="deletePost()"></post-card>
+</div>
+      
+@if (comments().length !=0) {
+  <ul class="list-group mt-4 mb-4" id="comments">
+    <li class="list-group-item active">Comments</li>
+    @for (item of comments(); track $index) {
+      <li class="list-group-item d-flex flex-row">
+        <img class="rounded-circle align-self-start me-3" src="{{item.user.avatar}}" alt="100" width="100"  >
+        <div>
+          <div><strong>{{item.user.name}} </strong>{{item.text}}</div>          
+          <div><small class="text-muted">{{item.date | date:"short"}}</small></div>
+        </div>
+      </li>
+    }
+  </ul>
+}
+
+
+<form [formGroup]="formComment" class="mt-4" id="commentForm" (ngSubmit)="addComment()">
+  <div class="mb-3">
+    <textarea class="form-control" name="comment" id="comment" formControlName="comment" placeholder="Write a comment"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary mt-3">Send</button>
+</form>
+
+
+<div class="mt-4 mb-4">
+  <button class="btn btn-success" (click)="goBack()">Go back</button>
+</div>
+}

@@ -1,0 +1,78 @@
+<div class="container"> <!-- [@simpleAnimation]="state" -->
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    id="form-login"
+    class="mt-4"
+    method="POST"
+    role="form"
+  >
+    <legend>Welcome to assbook!</legend>
+
+    <div class="mb-3">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+        formControlName="email"
+        [ngClass]="validClasses(email, 'is-valid', 'is-invalid')"
+        id="email"
+        placeholder="Email"
+        required
+      />
+      @if(email.errors?.['minlength']){
+      <div class="invalid-feedback">
+        The email has to be completed! Introduce:
+        {{email.errors?.['minlength'].requiredLength - email.errors?.['minlength'].actualLength}}
+        more characters!
+      </div>
+      } @if(email.errors?.['pattern']){
+      <div class="invalid-feedback">
+        A email must contain only letters and spaces!
+      </div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        class="form-control"
+        name="password"
+        formControlName="password"
+        [ngClass]="validClasses(password, 'is-valid', 'is-invalid')"
+        id="password"
+        placeholder="Password"
+        required
+      />
+      @if(password.errors?.['minlength']){
+      <div class="invalid-feedback">
+        A description must be at least 4 characters long! Introduce:
+        {{password.errors?.['minlength'].requiredLength - password.errors?.['minlength'].actualLength}}
+        more characters!
+      </div>
+      }
+    </div>
+    <p class="text-danger" id="errorInfo"></p>
+    <button type="submit" class="btn btn-primary">Login</button>
+    @if (!validarContrasena) {
+    <div class="text-danger" >
+      The password is not valid!
+    </div>
+    }
+
+    <a class="btn btn-dark" [routerLink]="['/auth/register']" role="button">Go Register</a>
+    <br />
+    <div googleLogin class="btn" style="margin-left: 0px;"></div>
+    <button
+      fbLogin
+      [scopes]="['email', 'public_profile']"
+      class="btn btn-primary"
+      (loginOk)="loggedFacebook($event)"
+      (loginError)="showError($event)"
+    >
+    <fa-icon [icon]="iconFacebook"></fa-icon>
+      Login con Facebook
+    </button>
+  </form>
+</div>

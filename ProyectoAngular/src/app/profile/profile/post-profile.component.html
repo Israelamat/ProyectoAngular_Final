@@ -1,0 +1,192 @@
+  @if(user){
+  <div class="container">
+    <div class="row mt-4" id="profile">
+      <div class="col-3">
+        <div>
+          <img class="w-100" id="avatar" src="{{ user.user.avatar }}" alt="" />
+          <label
+            class="btn btn-sm btn-danger"
+            [ngClass]="{
+              'd-none': !profile,
+              '': profile
+            }"
+          >
+            <i class="fa-regular fa-image"></i>
+            <input type="file" id="avatarInput" class="d-none" (change)="onAvatarChange($event)" />
+          </label>
+        </div>
+      </div>
+
+      <div class="col-9" id="profileInfo">
+        <!--  Cambiar h4 por inputs con un botón -->
+        <h4 id="name">{{ user.user.name }}</h4>
+        <h4 id="email">
+          <small class="text-muted">{{ user.user.email }}</small>
+        </h4>
+        <!-- Añadir campo de modificar password que muestre 2 campos -->
+
+        <div
+          [ngClass]="{
+            'd-none': !profile,
+            '': profile
+          }"
+        >
+          <button
+            class="btn btn-primary"
+            id="editProfile"
+            (click)="toggleProfileForm()"
+          >
+            <i class="fa-regular fa-pen-to-square"></i>
+            Edit profile
+          </button>
+          <button
+            class="btn btn-success"
+            id="editPassword"
+            (click)="togglePaswordForm()"
+          >
+            <i class="fa-solid fa-lock"></i>
+            Edit password
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="col-9 d-none"
+        id="profileForm"
+        [ngClass]="{
+          'd-none': !profileForm,
+          '': profileForm
+        }"
+      >
+        <form [formGroup]="emailName" (ngSubmit)="onSubmitEmailName()">
+          <div class="mb-3">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              formControlName="email"
+              [ngClass]="validClasses(email, 'is-valid', 'is-invalid')"
+              id="email"
+              placeholder="Email"
+              ngModel="{{ user.user.email }}"
+            />
+            @if(email.errors?.['email']){
+              <div class="invalid-feedback">
+                The email is not valid!
+              </div>
+              }
+            <label for="name">Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              formControlName="name"
+              [ngClass]="validClasses(name, 'is-valid', 'is-invalid')"
+              id="name"
+              placeholder="Name"
+              ngModel="{{ user.user.name }}"
+            />
+            @if(name.errors?.['minlength']){
+              <div class="invalid-feedback">
+                A name must be at least 4 characters long! Enter:
+                {{name.errors?.['minlength'].requiredLength - name.errors?.['minlength'].actualLength}}
+                more characters!
+              </div>
+              } @if(name.errors?.['pattern']){
+              <div class="invalid-feedback">
+                A name must contain only letters and spaces!
+              </div>
+              }          
+          </div>
+          
+          <button type="submit" class="btn btn-primary" [disabled]="emailName.invalid" >Save changes</button>       
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="cancelEditProfile"
+            (click)="toggleProfileForm()"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+
+      <div
+        class="col-9 d-none"
+        id="passwordForm"
+        [ngClass]="{
+          'd-none': !passwordForm2,
+          '': passwordForm2
+        }"
+      >
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()">
+          <div class="mb-3">
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              formControlName="password"
+              [ngClass]="validClasses(password, 'is-valid', 'is-invalid')"
+              id="password"
+              placeholder="Password"
+            />  
+            @if(password.errors?.['minlength']){
+              <div class="invalid-feedback">
+                A password must be at least 4 characters long! Enter:
+                {{password.errors?.['minlength'].requiredLength - password.errors?.['minlength'].actualLength}}
+                more characters!
+              </div>
+              } @if(password.errors?.['pattern']){
+              <div class="invalid-feedback">
+                A title must contain only letters and spaces!
+              </div>
+              }        
+            <label for="password2">Repeat password:</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password2"
+              formControlName="password2"
+              [ngClass]="validClasses(password2, 'is-valid', 'is-invalid')"
+              id="password2"
+              placeholder="Repeat password"
+            />
+            @if(password2.errors?.['minlength']){
+              <div class="invalid-feedback">
+                A password must be at least  characters long! Enter:
+                {{password2.errors?.['minlength'].requiredLength - password2.errors?.['minlength'].actualLength}}
+                more characters!
+              </div>
+              } @if(password2.errors?.['pattern']){
+              <div class="invalid-feedback">
+                A password must contain only letters and spaces!
+              </div>
+              }
+          </div>
+          
+          <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid"  >Save changes</button>        
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="cancelEditPassword"
+            (click)="togglePaswordForm()"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+    
+
+    <div class="mt-4" id="map">
+      <bm-map [coords]="coordinates" style="display: block; height: 300px; width: 600px;">
+        <bm-marker [coords]="coordinates" color="blue"></bm-marker>
+        <bm-autosuggest idContainer="parentSearch" idInput="search" (locationChanged)="moveMap($event)"></bm-autosuggest>
+      </bm-map>
+    </div>
+    <br>
+    <a [routerLink]="['/posts']" [queryParams]="{ creator: user.user.id}">Go to my posts</a>
+    </div>
+  }  

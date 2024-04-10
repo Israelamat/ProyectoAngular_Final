@@ -1,0 +1,15 @@
+
+<nav class="navbar navbar-light bg-light justify-content-between mt-3">
+  <form class="container-fluid">
+      <input class="form-control" type="text" name="search" id="search" [(ngModel)]="search"
+        placeholder="Search" aria-label="Search">
+  </form>
+</nav>
+
+@if(user){
+  <h1>Post of {{user.name}}</h1>
+}
+
+@for (post of publicaciones | postFilter:search ; track post.id) {
+  <post-card [publicacionCard]="post" (delete)="deletePost(post)"></post-card>
+}
