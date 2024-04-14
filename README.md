@@ -25,5 +25,5 @@ Assbook es una aplicación de red social desarrollada con Angular que permite a 
 5. Abre tu navegador web y ve a la dirección `http://localhost:4200/`. Verás la página de inicio de Assbook si todo está configurado correctamente.
 
 ## Capturas de Pantalla
-![TimeLine]([![assbook1.jpg](https://i.postimg.cc/9FF530XF/assbook1.jpg)](https://postimg.cc/Lh70LHZr)) | ![Publicación de Contenido]([![assbook2.jpg](https://i.postimg.cc/GmHW2fsW/assbook2.jpg)](https://postimg.cc/MnJP3d55)) | 
-![Exploración de Perfiles]([![assbook3.jpg](https://i.postimg.cc/Hx4KRDfy/assbook3.jpg)](https://postimg.cc/S2RDY5QS))
+![TimeLine](https://i.postimg.cc/9FF530XF/assbook1.jpg) | ![Publicación de Contenido](https://i.postimg.cc/GmHW2fsW/assbook2.jpg) | ![Exploración de Perfiles](https://i.postimg.cc/Hx4KRDfy/assbook3.jpg)
+
